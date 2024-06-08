@@ -71,6 +71,7 @@ bot.on('message', async (ctx) => {
         const scheduleTime = `${addHoursToTime(parseInt(session.offset))}:00`; //на 3 часа раньше от 20:00, потому что в shedule неправильные часовые пояса
 
         await createUser(chatId, userName, firstName, lastName, scheduleTime);
+        notifyAdmin(`${userName} just started sleep course!`);
     };
 
     if (session.isAwaitingUpdatedTimeZone) {
@@ -118,6 +119,7 @@ schedule.scheduleJob('* * * * *', async () => {
         
             if (moscowTime === scheduleTime) { //ставлю на 3 часа раньше. потому что вот так вот решил крон
                 sendLesson(lessonNumber, chatId);
+                notifyAdmin(`${user.dataValues.userName} just received the lesson #${lessonNumber}!`);
             }
         });
     } catch (e) {
@@ -129,7 +131,6 @@ schedule.scheduleJob('* * * * *', async () => {
 //разделить логику апдейта номера и отправки урока
 //проверку на номер урока и удаление из базы делать перед отправкой. Ну или после, но тоже как-то отдельно
 //или в сенд лессон передавать сразу дата валуес чтобы не запрашивать юзера
-//Нужно обработать выход за пределы 24х часов. Например при часовом поясе +12 у нас получается время отправки 29:00
 const sendLesson = async (lessonNumber, chatId) => {
   const lesson = lessons[lessonNumber - 1];
   try {
@@ -142,7 +143,7 @@ const sendLesson = async (lessonNumber, chatId) => {
     const user = await findUserByChatId(chatId);
     if (user.dataValues.lessonNumber === 30) {
         await deleteUserByChatId(chatId);
-        notifyAdmin(`${user.dataValues.userName} just finished course!`);
+        notifyAdmin(`${user.dataValues.userName} just finished sleep course!`);
     } else {
         await updateLessonNumberByChatId(chatId, lessonNumber + 1);
     } 
