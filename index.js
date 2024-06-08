@@ -83,7 +83,7 @@ bot.on('message', async (ctx) => {
             await ctx.reply("Пожалуйста, укажите отклонение от Московского времени в правильном формате (от -12 до +12).");
             return;
         }
-        const scheduleTime = `${addHoursToTime(parseInt(session.offset))}:00`; //на 3 часа раньше от 20:00, потому что в shedule не правильные часовые пояса
+        const scheduleTime = `${addHoursToTime(parseInt(session.offset))}:00`;
 
         await updateTimeZoneByChatId(chatId, scheduleTime);
     }
@@ -117,7 +117,7 @@ schedule.scheduleJob('* * * * *', async () => {
             const scheduleTime = user.dataValues.scheduleTime;
             const lessonNumber = user.dataValues.lessonNumber;
         
-            if (moscowTime === scheduleTime) { //ставлю на 3 часа раньше. потому что вот так вот решил крон
+            if (moscowTime === scheduleTime) {
                 sendLesson(lessonNumber, chatId);
                 notifyAdmin(`${user.dataValues.userName} just received the lesson #${lessonNumber}!`);
             }
@@ -161,7 +161,7 @@ const notifyAdmin = (error) => {
 };
 
 const addHoursToTime = (hoursToAdd) => {
-    let hours = 17 + hoursToAdd;
+    let hours = 20 + hoursToAdd;
 
     if (hours >= 24) {
         hours -= 24;
