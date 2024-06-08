@@ -63,7 +63,7 @@ bot.on('message', async (ctx) => {
         if (offsetRegex.test(offset)) {
             session.isAwaitingTimeZone = false;
             session.offset = offset;
-            await ctx.reply(`Спасибо, ваш часовой пояс сохранён как МСК ${offset}.`);
+            await ctx.reply(`Спасибо, ваш часовой пояс сохранён как МСК ${offset}. Теперь каждый день в 20:00 по вашему местному времени я буду отправлять Вам урок из курса Максима по сну.`);
         } else {
             await ctx.reply("Пожалуйста, укажите отклонение от Московского времени в правильном формате (от -12 до +12).");
             return;
