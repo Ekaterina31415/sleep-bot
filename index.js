@@ -23,10 +23,10 @@ bot.api.setMyCommands([
         command: 'update_timezone',
         description: 'Переустановить часовой пояс',
     },
-    {
-        command: 'get_lesson',
-        description: 'Получить урок по его номеру'
-    }
+    // {
+    //     command: 'get_lesson',
+    //     description: 'Получить урок по его номеру'
+    // }
 ]);
 
 bot.command('start', async (ctx) => {
@@ -49,6 +49,11 @@ bot.command('update_timezone', async (ctx) => {
     await ctx.reply('Пожалуйста, скажите, на сколько ваше время отличается от Московского (например, +1).');
     session.isAwaitingUpdatedTimeZone = true;
 });
+
+// bot.command('get_lesson', async (ctx) => {
+//     await ctx.reply('Отправьте мне номер урока от 1 до 30 :)');
+//     session.isAwaitingLessonNumber = true;
+// });
 
 bot.on('message', async (ctx) => {
     const offset = ctx.update.message.text;
@@ -87,7 +92,6 @@ bot.on('message', async (ctx) => {
 
         await updateTimeZoneByChatId(chatId, scheduleTime);
     }
-    
 });
 
 
@@ -161,7 +165,7 @@ const notifyAdmin = (error) => {
 };
 
 const addHoursToTime = (hoursToAdd) => {
-    let hours = 20 + hoursToAdd;
+    let hours = 20 - hoursToAdd;
 
     if (hours >= 24) {
         hours -= 24;
