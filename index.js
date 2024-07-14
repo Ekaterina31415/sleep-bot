@@ -129,10 +129,7 @@ schedule.scheduleJob('* * * * *', async () => {
             const scheduleTime = user.dataValues.scheduleTime;
             const lessonNumber = user.dataValues.lessonNumber;
         
-            if (moscowTime === scheduleTime) {
-                sendLesson(lessonNumber, chatId);
-                notifyAdmin(`${user.dataValues.userName} just received the lesson #${lessonNumber}!`);
-            }
+            if (moscowTime === scheduleTime) sendLesson(lessonNumber, chatId);
         });
     } catch (e) {
         notifyAdmin('Error while schedule lessons: ', e);
