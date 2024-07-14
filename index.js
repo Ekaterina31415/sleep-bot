@@ -75,8 +75,12 @@ bot.on('message', async (ctx) => {
         }
         const scheduleTime = `${addHoursToTime(parseInt(session.offset))}:00`; //на 3 часа раньше от 20:00, потому что в shedule неправильные часовые пояса
 
-        await createUser(chatId, userName, firstName, lastName, scheduleTime);
-        notifyAdmin(`${userName} just started sleep course!`);
+        try {
+            await createUser(chatId, userName, firstName, lastName, scheduleTime);
+            notifyAdmin(`${userName} just started sleep course!`);
+        } catch (e) {
+            notifyAdmin(`Error while creating user ${userName}: `, e);
+        }
     };
 
     if (session.isAwaitingUpdatedTimeZone) {
@@ -90,7 +94,11 @@ bot.on('message', async (ctx) => {
         }
         const scheduleTime = `${addHoursToTime(parseInt(session.offset))}:00`;
 
-        await updateTimeZoneByChatId(chatId, scheduleTime);
+        try {
+            await updateTimeZoneByChatId(chatId, scheduleTime);
+        } catch (e) {
+            notifyAdmin(`Error while updating timezone. ChatId: ${chatId}, scheduleTime: ${scheduleTime}: `, e);
+        }
     }
 });
 
